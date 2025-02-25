@@ -22,7 +22,7 @@ function draw() {
 
 function swapStateIfNeeded() {
   if(millis() > lastSwitchedTime + waitTime){
-    isWhite = !isWhite
+    isWhite = !isWhite;
     lastSwitchedTime = millis();
   }
 }
