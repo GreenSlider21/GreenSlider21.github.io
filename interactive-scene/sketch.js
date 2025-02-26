@@ -36,6 +36,7 @@ function draw() {
   plinkoBall(); 
   scoreZones();
   scorePoints();
+  scoreDisplay();
 }
 
 function plinkoGravity() {
@@ -79,7 +80,7 @@ function plinkoBall() {
 
 function peg(){
   // creates a plinko peg
-    circle(pegX,pegY,pegR);
+  circle(pegX,pegY,pegR);
 }
 
 function collision(){
@@ -96,30 +97,31 @@ function collision(){
     }
   }
   if (moveLeft === true){
-    ballX -= xSpeed
+    ballX -= xSpeed;
   }
   if (moveRight === true){
-    ballX += xSpeed
+    ballX += xSpeed;
   }
 }
 
 function keyPressed(){
   // lets space key drop balls
   if (key === " "){
-    dropBall = true
+    dropBall = true;
   }
 }
 
 function mouseClicked() {
   // lets clicking drop balls
-  dropBall = true
+  dropBall = true;
 }
 
-function mouseWheel() {
+function mouseWheel(event) {
   // lets mouse wheel move dropper
   if (event.delta > 0) {
     dropperX += dropperSpeed;
-  } else {
+  } 
+  else {
     dropperX -= dropperSpeed;
   }
 }
@@ -128,7 +130,7 @@ function ballDropper(){
   // drops plinko balls and moves left and right for differnt drop spots
   rectMode(CENTER);
   rect(dropperX,dropperHeight/2,dropperWidth,dropperHeight);
-   // a key move left
+  // a key move left
   if (keyIsDown(65)){
     dropperX -= dropperSpeed;
   }
@@ -151,13 +153,12 @@ function ballDropper(){
 function scoreZones(){
   // creates differnt score zones
   for (let goalX = 0; goalX <= width; goalX += width/6){
-  rect(goalX, goalY, goalWidth, goalHeight);
+    rect(goalX, goalY, goalWidth, goalHeight);
   }
 }
 
 function scorePoints(){
   // scores point depending on the goal landed in
-  console.log(score);
   if (ballY >= height - goalHeight && dropBall === true){
     
     if (ballX >= 0 && ballX <= width/6 ||
@@ -174,4 +175,12 @@ function scorePoints(){
       score += 3;
     } 
   }
+}
+
+function scoreDisplay(){
+  // Displays the curent score
+  textSize(40);
+  textFont("playbill");
+  text(score, 100, 100);
+
 }
