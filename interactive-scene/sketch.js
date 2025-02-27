@@ -182,5 +182,4 @@ function scoreDisplay(){
   textSize(40);
   textFont("playbill");
   text(score, 100, 100);
-
 }
