@@ -20,9 +20,7 @@ let goalWidth = 10;
 let goalHeight = 20;
 
 function setup() {
-  createCanvas(700, 600);
-  pegX = width/2;
-  pegY = height/2 + height/4;
+  createCanvas(windowWidth, windowHeight);
   dropperX = width/2;
   goalY = height - goalHeight/2;
 }
@@ -80,27 +78,35 @@ function plinkoBall() {
 
 function peg(){
   // creates a plinko peg
-  circle(pegX,pegY,pegR);
+  for (let pegX = radius*4; pegX <= width - radius*4; pegX += radius*8){
+    for (let pegY = 150; pegY <= height; pegY += radius*8){
+      circle(pegX,pegY,pegR);
+    }
+  }
 }
 
 function collision(){
   // makes the ball bounce off a peg
-  if (dist(ballX, ballY, pegX, pegY) <= pegR){
-    ySpeed = -ySpeed;
-    if (pegX - ballX <=0){
-      moveLeft = true;
-      moveRight = false;
+  for (let pegX = radius*4; pegX <= width - radius *4; pegX += radius*8){
+    for (let pegY = 150; pegY <= height; pegY += radius*8){
+      if (dist(ballX, ballY, pegX, pegY) <= pegR){
+        ySpeed = -ySpeed;
+        if (pegX - ballX <=0){
+          moveLeft = true;
+          moveRight = false;
+        }
+        else{
+          moveLeft = false;
+          moveRight = true;
+        }
+      }
+      if (moveLeft === true){
+        ballX -= xSpeed*0.01;
+      }
+      if (moveRight === true){
+        ballX += xSpeed*0.01;
+      }
     }
-    else{
-      moveLeft = false;
-      moveRight = true;
-    }
-  }
-  if (moveLeft === true){
-    ballX -= xSpeed;
-  }
-  if (moveRight === true){
-    ballX += xSpeed;
   }
 }
 
