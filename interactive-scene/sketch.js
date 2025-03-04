@@ -1,3 +1,4 @@
+// creating variables
 let ballX;
 let ballY;
 let radius = 10;
@@ -16,11 +17,13 @@ let score = 0;
 let goalY;
 let goalWidth = 10;
 let goalHeight = 20;
+let sproing;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   dropperX = width/2;
   goalY = height - goalHeight/2;
+  sproing = loadSound("sproing.m4a");
 }
 
 function draw() {
@@ -33,19 +36,17 @@ function draw() {
   scoreZones();
   scorePoints();
   scoreDisplay();
+  spaceKeyPressed();
+  rKeyPressed();
 }
 
 function plinkoGravity() {
-  // checks if a ball is being dropped and resets it's values
+  // checks if a ball is being dropped, add gravity to dropped balls, and resets plinko ball values
   if (dropBall === true){
     // constantly adds gravity to the ball
     ySpeed += gravity;
     ballY += ySpeed;
-  
-    // makes the ball die on the floor
-    if (ballY > height - radius){
-      dropBall = false;
-    }
+
     // makes the ball bounce off the wall
     if (ballX >= width - radius){
       xSpeed = -xSpeed;
@@ -58,6 +59,8 @@ function plinkoGravity() {
     // adds a resistance to the speed causing a gradual slow down
     ySpeed = ySpeed * 0.99;
   }
+
+  //resets the balls poition, direction, and speed
   else {
     ballX = dropperX;
     ballY = dropperHeight + radius;
@@ -75,13 +78,13 @@ function plinkoBall() {
 }
 
 function peg(){
-  // creates a plinko peg
-  for (let pegX = radius*4; pegX <= width - radius*4; pegX += radius*8){
+  // creates plinko pegs
+  for (let pegX = radius*4; pegX - radius*2 <= width - radius*4; pegX += radius*8){
     for (let pegY = 150; pegY <= height; pegY += radius*16){
       circle(pegX,pegY,pegR);
     }
   }
-  for (let pegX = radius*8; pegX <= width - radius*4; pegX += radius*8){
+  for (let pegX = radius*8; pegX - radius*2 <= width - radius*4; pegX += radius*8){
     for (let pegY = 150 + radius*8; pegY <= height; pegY += radius*16){
       circle(pegX,pegY,pegR);
     }
@@ -90,10 +93,12 @@ function peg(){
 
 function collision(){
   // makes the ball bounce off a peg
-  for (let pegX = radius*4; pegX <= width - radius *4; pegX += radius*8){
+  for (let pegX = radius*4; pegX - radius*2 <= width - radius *4; pegX += radius*8){
     for (let pegY = 150; pegY <= height; pegY += radius*16){
       if (dist(ballX, ballY, pegX, pegY) <= pegR){
         ySpeed = -ySpeed;
+        fill(random(0, 255), random(0, 255), random(0, 255));
+        sproing.play();
         if (pegX - ballX >=0){
           moveLeft = true;
           moveRight = false;
@@ -106,10 +111,12 @@ function collision(){
     }
   }
 
-  for (let pegX = radius*8; pegX <= width - radius*4; pegX += radius*8){
+  for (let pegX = radius*8; pegX - radius*2 <= width - radius*4; pegX += radius*8){
     for (let pegY = 150 + radius*8; pegY <= height; pegY += radius*16){
       if (dist(ballX, ballY, pegX, pegY) <= pegR){
         ySpeed = -ySpeed;
+        fill(random(0, 255), random(0, 255), random(0, 255));
+        sproing.play();
         if (pegX - ballX >=0){
           moveLeft = true;
           moveRight = false;
@@ -131,14 +138,14 @@ function collision(){
   }
 }
 
-function keyPressed(){
+function spaceKeyPressed(){
   // lets space key drop balls
   if (key === " "){
     dropBall = true;
   }
 }
 
-function keyPressed(){
+function rKeyPressed(){
   // lets the r key kill balls
   if (key === "r"){
     dropBall = false;
@@ -192,21 +199,24 @@ function scoreZones(){
 }
 
 function scorePoints(){
-  // scores point depending on the goal landed in
+  // scores point depending on the goal landed in and kills the plinko ball
   if (ballY >= height - goalHeight && dropBall === true){
     
     if (ballX >= 0 && ballX <= width/6 ||
         ballX <= width && ballX >= width/6*5){
+      dropBall = false;
       score += 1;
     }
     else if (ballX >= width/6 && ballX <= width/6*2 ||
         ballX >= width/6*4 && ballX <= width/6*5){
-      score += 2;
+      dropBall = false;
+      score += 3;
     }
 
     else if (ballX >= width/6*2 && ballX <= width/6*3 ||
         ballX >= width/6*3 && ballX <= width/6*4){
-      score += 3;
+      dropBall = false;
+      score += 2;
     } 
   }
 }
