@@ -2,10 +2,8 @@ let ballX;
 let ballY;
 let radius = 10;
 let ySpeed = 0;
-let xSpeed = 3;
+let xSpeed = 0.01;
 let gravity = 0.1;
-let pegX;
-let pegY;
 let pegR = 10*2;
 let dropperX;
 let dropperSpeed = 3;
@@ -58,7 +56,7 @@ function plinkoGravity() {
     }
   
     // adds a resistance to the speed causing a gradual slow down
-    ySpeed = ySpeed * 0.999;
+    ySpeed = ySpeed * 0.99;
   }
   else {
     ballX = dropperX;
@@ -79,7 +77,12 @@ function plinkoBall() {
 function peg(){
   // creates a plinko peg
   for (let pegX = radius*4; pegX <= width - radius*4; pegX += radius*8){
-    for (let pegY = 150; pegY <= height; pegY += radius*8){
+    for (let pegY = 150; pegY <= height; pegY += radius*16){
+      circle(pegX,pegY,pegR);
+    }
+  }
+  for (let pegX = radius*8; pegX <= width - radius*4; pegX += radius*8){
+    for (let pegY = 150 + radius*8; pegY <= height; pegY += radius*16){
       circle(pegX,pegY,pegR);
     }
   }
@@ -88,10 +91,10 @@ function peg(){
 function collision(){
   // makes the ball bounce off a peg
   for (let pegX = radius*4; pegX <= width - radius *4; pegX += radius*8){
-    for (let pegY = 150; pegY <= height; pegY += radius*8){
+    for (let pegY = 150; pegY <= height; pegY += radius*16){
       if (dist(ballX, ballY, pegX, pegY) <= pegR){
         ySpeed = -ySpeed;
-        if (pegX - ballX <=0){
+        if (pegX - ballX >=0){
           moveLeft = true;
           moveRight = false;
         }
@@ -100,11 +103,29 @@ function collision(){
           moveRight = true;
         }
       }
+    }
+  }
+
+  for (let pegX = radius*8; pegX <= width - radius*4; pegX += radius*8){
+    for (let pegY = 150 + radius*8; pegY <= height; pegY += radius*16){
+      if (dist(ballX, ballY, pegX, pegY) <= pegR){
+        ySpeed = -ySpeed;
+        if (pegX - ballX >=0){
+          moveLeft = true;
+          moveRight = false;
+        }
+        else{
+          moveLeft = false;
+          moveRight = true;
+        }
+      }
+      
+      
       if (moveLeft === true){
-        ballX -= xSpeed*0.01;
+        ballX -= xSpeed;
       }
       if (moveRight === true){
-        ballX += xSpeed*0.01;
+        ballX += xSpeed;
       }
     }
   }
@@ -114,6 +135,13 @@ function keyPressed(){
   // lets space key drop balls
   if (key === " "){
     dropBall = true;
+  }
+}
+
+function keyPressed(){
+  // lets the r key kill balls
+  if (key === "r"){
+    dropBall = false;
   }
 }
 
