@@ -23,7 +23,10 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   dropperX = width/2;
   goalY = height - goalHeight/2;
-  sproing = loadSound("sproing.m4a");
+  sproing = loadSound("sproing.mp3");
+  onePoint = loadSound("win-1.mp3");
+  twoPoints = loadSound("win-2.mp3");
+  threePoints = loadSound("win-3.mp3");
 }
 
 function draw() {
@@ -158,7 +161,7 @@ function mouseClicked() {
 }
 
 function mouseWheel(event) {
-  // lets mouse wheel move dropper
+  // lets mouse wheel move dropper more percisely
   if (event.delta > 0) {
     dropperX += dropperSpeed;
   } 
@@ -205,17 +208,20 @@ function scorePoints(){
     if (ballX >= 0 && ballX <= width/6 ||
         ballX <= width && ballX >= width/6*5){
       dropBall = false;
+      onePoint.play();
       score += 1;
     }
     else if (ballX >= width/6 && ballX <= width/6*2 ||
         ballX >= width/6*4 && ballX <= width/6*5){
       dropBall = false;
+      threePoints.play();
       score += 3;
     }
 
     else if (ballX >= width/6*2 && ballX <= width/6*3 ||
         ballX >= width/6*3 && ballX <= width/6*4){
       dropBall = false;
+      twoPoints.play();
       score += 2;
     } 
   }
