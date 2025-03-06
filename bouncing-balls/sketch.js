@@ -1,4 +1,4 @@
-// Bouncing Balls Object Demo
+// Bouncing Ball Object Demo
 
 let ballArray = [];
 
@@ -15,23 +15,24 @@ function draw() {
     ball.x += ball.dx;
     ball.y += ball.dy;
 
-    //teleport ball to opposite side
-    if (ball.x > width){
+    //teleport around edge of screen
+    if (ball.x > width) {
       ball.x -= width;
     }
-    else if(ball.x < 0){
+    else if (ball.x < 0) {
       ball.x += width;
     }
-    if (ball.y > height){
+    if (ball.y > height) {
       ball.y -= height;
     }
-    else if(ball.y < 0){
+    else if (ball.y < 0) {
       ball.y += height;
     }
 
     //display ball
     fill("red");
-    circle(ball.x, ball.y, ball.radius*2);
+    circle(ball.x, ball.y, ball.radius * 2);
+  }
 }
 
 function mousePressed() {
@@ -42,7 +43,7 @@ function spawnBall() {
   let someBall = {
     x: random(width),
     y: random(height),
-    radius: random(15,40),
+    radius: random(15, 40),
     dx: random(-5, 5),
     dy: random(-5, 5),
   };
