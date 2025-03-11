@@ -1,4 +1,4 @@
-// Cribbage
+// Card game
 // Liam Prange
 // 3/10/2025
 //
