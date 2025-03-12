@@ -7,10 +7,14 @@
 
 
 let deck = [];
+let suits = [H, D, S, C]
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   for (let card = 1; card < 14; card++){
+    for (let card of deck){
+      // make cards have differnt suits and be their own arrys so that later code can look at each card identity
+    }
     deck.push(card);
   }
 }
