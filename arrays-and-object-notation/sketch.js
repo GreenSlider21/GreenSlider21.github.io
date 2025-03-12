@@ -7,18 +7,21 @@
 
 
 let deck = [];
-let suits = [H, D, S, C]
+let suit = ["hearts ", "diamonds ", "spades ", "clubs "];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  for (let card = 1; card < 14; card++){
-    for (let card of deck){
-      // make cards have differnt suits and be their own arrys so that later code can look at each card identity
-    }
-    deck.push(card);
+  for (let suitNumber = 0; suitNumber < 4; suitNumber++){
+    makeDeck(suit[suitNumber]);
   }
 }
 
 function draw() {
   background(220);
+}
+
+function makeDeck(suit) {
+  for (let card = 1; card < 14; card++){
+    deck.push(suit + card);
+  }
 }
