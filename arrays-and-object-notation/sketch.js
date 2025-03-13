@@ -8,20 +8,33 @@
 
 let deck = [];
 let suit = ["hearts ", "diamonds ", "spades ", "clubs "];
+let card = {
+  suit_value: "suit",
+  number_value: "card",
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   for (let suitNumber = 0; suitNumber < 4; suitNumber++){
     makeDeck(suit[suitNumber]);
   }
+  // createDeck();
+
 }
 
 function draw() {
   background(220);
+  if (deck[0].suit === "hearts "){
+    console.log(true);
+  }
 }
 
 function makeDeck(suit) {
-  for (let card = 1; card < 14; card++){
-    deck.push(suit + card);
+  for (let num = 1; num < 14; num++){
+    deck.push(suit + num);
   }
 }
+
+// function createDeck() {
+
+// }
