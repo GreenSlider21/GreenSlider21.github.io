@@ -1,4 +1,4 @@
-// Card game
+// Cribbage
 // Liam Prange
 // 3/10/2025
 //
@@ -7,34 +7,31 @@
 
 
 let deck = [];
+let cardNum = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"];
 let suit = ["hearts ", "diamonds ", "spades ", "clubs "];
-let card = {
-  suit_value: "suit",
-  number_value: "card",
+
+for (let num = 0; num < cardNum.length; num++) {
+  for (let type = 0; type < suit.length; type++) {
+    let card = {
+      suit_value: suit[type],
+      number_value: cardNum[num],
+    };
+    deck.push(card);
+  }
 }
+
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  for (let suitNumber = 0; suitNumber < 4; suitNumber++){
-    makeDeck(suit[suitNumber]);
-  }
-  // createDeck();
+  createDeck();
 
 }
 
 function draw() {
   background(220);
-  if (deck[0].suit === "hearts "){
-    console.log(true);
-  }
 }
 
-function makeDeck(suit) {
-  for (let num = 1; num < 14; num++){
-    deck.push(suit + num);
-  }
+
+function createDeck() {
+
 }
-
-// function createDeck() {
-
-// }
