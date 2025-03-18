@@ -5,6 +5,7 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
+// creating varriables and arrays for later
 let clubsImages = [];
 let diamondsImages = [];
 let heartsImages = [];
@@ -15,8 +16,11 @@ let cardSuit = ["clubs", "diamonds", "hearts", "spades"];
 let cardWorth = [2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 10, 10, 10];
 let cardImage = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 let playerHand = [];
+let cardSize = 0.40
+let playerPoints = 0;
 
 function preload(){
+  // preloading each seperate suit as differnt arrays so that they can be accessed easily later
   for (let png = 0; png < cardNum.length; png++) {
     clubsImages.push(loadImage("deck_images/" + cardNum[png] + "_of_clubs.png"));
     diamondsImages.push(loadImage("deck_images/" + cardNum[png] + "_of_diamonds.png"));
@@ -28,16 +32,18 @@ function preload(){
 function setup() {
   createCanvas(windowWidth, windowHeight);
   createDeck();
+  drawHand();
 }
 
 function draw() {
-  background(220);
+  background(53, 101, 77);
   // console.log(deck[0].suitValue);
-  showCard();
+  showHand();
 }
 
 
 function createDeck() {
+  // unsing arrays created earlier to create one card of each suit and number with appropriate values for calculations and images then putting all of this in a deck array
   for (let num = 0; num < cardNum.length; num++) {
     for (let suit = 0; suit < cardSuit.length; suit++) {
       let card = {
@@ -51,13 +57,52 @@ function createDeck() {
   }
 }
 
-function showCard() {
-  if (deck[0].suitValue === "clubs"){
-    image(clubsImages[deck[0].imageValue], width/2, height/2);
-  }  
+function drawHand() {
+  // well i thought i was having it take six random cards out of the deck and put them in the playerHand array
+  for (let i = 0; i < 6; i++) {
+    playerHand.push(deck.splice(random(51)));
+  }
 }
 
-function drawHand() {
-  // .slice
-  deck.slice(random(deck.length));
+function showHand() {
+  // displays the cards in the players hand currently
+  for (let treys = 0; treys < playerHand.length; treys++) {
+    // displays clubs
+    if (playerHand[0][treys].suitValue === "clubs") {
+      image(clubsImages[playerHand[0][treys].imageValue], width/2, height/2, 
+        clubsImages[playerHand[0][treys].imageValue].width * cardSize, clubsImages[playerHand[0][treys].imageValue].height * cardSize);
+    }
+    // displays diamonds
+    if (playerHand[0][treys].suitValue === "diamonds") {
+      image(diamondsImages[playerHand[0][treys].imageValue], width/2, height/2, 
+        diamondsImages[playerHand[0][treys].imageValue].width * cardSize, diamondsImages[playerHand[0][treys].imageValue].height * cardSize);
+    }
+    // displays heartss
+    if (playerHand[0][treys].suitValue === "hearts") {
+      image(heartsImages[playerHand[0][treys].imageValue], width/2, height/2, 
+        heartsImages[playerHand[0][treys].imageValue].width * cardSize, heartsImages[playerHand[0][treys].imageValue].height * cardSize);
+    }
+    // displays spades
+    if (playerHand[0][treys].suitValue === "spades") {
+      image(spadesImages[playerHand[0][treys].imageValue], width/2, height/2, 
+        spadesImages[playerHand[0][treys].imageValue].width * cardSize, spadesImages[playerHand[0][treys].imageValue].height * cardSize);
+    }
+  }
 }
+
+// function handWorth () {
+//   for (let point of playerHand) {
+//     if (SOMETHING THAT LOOKS AT EVERY CARD IN PLAYERHAND + REVEALED CARD FINDS COMBINATIONS TO MAKE UNIQUE 15) {
+//       playerPoints += 2 FOR EACH UNIQUE COMBINATION
+//     }
+//     if (SOMETHING THAT LOOKS AT EVERY CARD IN PLAYERHAND + REVEALED CARD FINDS COMBINATIONS TO MAKE UNIQUE RUNS) {
+//       playerPoints += RUN LENGTH
+//     }
+//     if (SOMETHING THAT LOOKS AT EVERY CARD IN PLAYERHAND + REVEALED CARD FINDS COMBINATIONS TO MAKE UNIQUE PAIRS) {
+//       playerPoints += 2 FOR EACH UNIQUE COMBINATION
+//     }
+//     if (SOMETHING THAT LOOKS AT EVERY JACK IN PLAYERHAND FINDS IF SUIT MATCHES REVEALED CARD) {
+//       playerPoints += 1
+//     }
+//   }
+// }
