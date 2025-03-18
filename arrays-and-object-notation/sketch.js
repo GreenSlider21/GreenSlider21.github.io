@@ -16,7 +16,7 @@ let cardSuit = ["clubs", "diamonds", "hearts", "spades"];
 let cardWorth = [2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 10, 10, 10];
 let cardImage = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 let playerHand = [];
-let cardSize = 0.40
+let cardSize = 0.40;
 let playerPoints = 0;
 
 function preload(){
@@ -37,7 +37,6 @@ function setup() {
 
 function draw() {
   background(53, 101, 77);
-  // console.log(deck[0].suitValue);
   showHand();
 }
 
@@ -58,9 +57,11 @@ function createDeck() {
 }
 
 function drawHand() {
-  // well i thought i was having it take six random cards out of the deck and put them in the playerHand array
-  for (let i = 0; i < 6; i++) {
-    playerHand.push(deck.splice(random(51)));
+  // takes six random cards out of the deck and put them in the playerHand array
+  for (let knave = 0; knave < 6; knave++) {
+    let theRandom = Math.round(random(51 - knave));
+    playerHand.push(structuredClone(deck[theRandom]));
+    deck.splice(theRandom, 1);
   }
 }
 
@@ -68,24 +69,24 @@ function showHand() {
   // displays the cards in the players hand currently
   for (let treys = 0; treys < playerHand.length; treys++) {
     // displays clubs
-    if (playerHand[0][treys].suitValue === "clubs") {
-      image(clubsImages[playerHand[0][treys].imageValue], width/2, height/2, 
-        clubsImages[playerHand[0][treys].imageValue].width * cardSize, clubsImages[playerHand[0][treys].imageValue].height * cardSize);
+    if (playerHand[treys].suitValue === "clubs") {
+      image(clubsImages[playerHand[treys].imageValue], treys*210, height - 300, 
+        clubsImages[playerHand[treys].imageValue].width * cardSize, clubsImages[playerHand[treys].imageValue].height * cardSize);
     }
     // displays diamonds
-    if (playerHand[0][treys].suitValue === "diamonds") {
-      image(diamondsImages[playerHand[0][treys].imageValue], width/2, height/2, 
-        diamondsImages[playerHand[0][treys].imageValue].width * cardSize, diamondsImages[playerHand[0][treys].imageValue].height * cardSize);
+    if (playerHand[treys].suitValue === "diamonds") {
+      image(diamondsImages[playerHand[treys].imageValue], treys*210, height - 300, 
+        diamondsImages[playerHand[treys].imageValue].width * cardSize, diamondsImages[playerHand[treys].imageValue].height * cardSize);
     }
     // displays heartss
-    if (playerHand[0][treys].suitValue === "hearts") {
-      image(heartsImages[playerHand[0][treys].imageValue], width/2, height/2, 
-        heartsImages[playerHand[0][treys].imageValue].width * cardSize, heartsImages[playerHand[0][treys].imageValue].height * cardSize);
+    if (playerHand[treys].suitValue === "hearts") {
+      image(heartsImages[playerHand[treys].imageValue], treys*210, height - 300, 
+        heartsImages[playerHand[treys].imageValue].width * cardSize, heartsImages[playerHand[treys].imageValue].height * cardSize);
     }
     // displays spades
-    if (playerHand[0][treys].suitValue === "spades") {
-      image(spadesImages[playerHand[0][treys].imageValue], width/2, height/2, 
-        spadesImages[playerHand[0][treys].imageValue].width * cardSize, spadesImages[playerHand[0][treys].imageValue].height * cardSize);
+    if (playerHand[treys].suitValue === "spades") {
+      image(spadesImages[playerHand[treys].imageValue], treys*210, height - 300, 
+        spadesImages[playerHand[treys].imageValue].width * cardSize, spadesImages[playerHand[treys].imageValue].height * cardSize);
     }
   }
 }
