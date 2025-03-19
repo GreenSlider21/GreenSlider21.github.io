@@ -22,7 +22,9 @@ let cardSize;
 let cardShiftX;
 let cardShiftY;
 let playerPoints = 0;
+let oppPoints = 0;
 let displayCards = [playerHand, cutCard, oppHand];
+let drawCards = false;
 
 function preload(){
   // preloading each seperate suit as differnt arrays so that they can be accessed easily later
@@ -38,14 +40,22 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   cardScale();
   createDeck();
-  drawHand();
-  oppDrawHand();
-  cutDeck();
 }
 
 function draw() {
   background(53, 101, 77);
   showCards();
+  spaceKeyPressed();
+  drawHand();
+  oppDrawHand();
+  cutDeck();
+}
+
+function spaceKeyPressed(){
+  // lets space key draw card
+  if (key === " "){
+    drawCards = true;
+  }
 }
 
 function cardScale() {
@@ -79,27 +89,33 @@ function createDeck() {
 
 function drawHand() {
   // takes six random cards out of the deck and puts them in the playerHand array
-  for (let knave = 0; knave < 6; knave++) {
-    let theRandom = Math.round(random(0, 51 - knave));
-    playerHand.push(structuredClone(deck[theRandom]));
-    deck.splice(theRandom, 1);
+  if (drawCards === true) {
+    for (let knave = 0; knave < 6; knave++) {
+      let theRandom = Math.round(random(0, 51 - knave));
+      playerHand.push(structuredClone(deck[theRandom]));
+      deck.splice(theRandom, 1);
+    }
   }
 }
 
 function oppDrawHand() {
   // takes six random cards out of the deck and puts them in the oppHand array
-  for (let fool = 0; fool < 6; fool++) {
-    let aRandom = Math.round(random(0, 45 - fool));
-    oppHand.push(structuredClone(deck[aRandom]));
-    deck.splice(aRandom, 1);
+  if (drawCards === true) {
+    for (let fool = 0; fool < 6; fool++) {
+      let aRandom = Math.round(random(0, 45 - fool));
+      oppHand.push(structuredClone(deck[aRandom]));
+      deck.splice(aRandom, 1);
+    }
   }
 }
 
 function cutDeck() {
   // takes one random card out of the deck and puts it in the cutCard array
+  if (drawCards === true) {
     let anoutherRandom = Math.round(random(0, 39));
     cutCard.push(structuredClone(deck[anoutherRandom]));
     deck.splice(anoutherRandom, 1);
+  }
 }
 
 function showCards() {
@@ -130,19 +146,3 @@ function showCards() {
   }
 }
 
-// function handWorth () {
-//   for (let point of playerHand) {
-//     if (SOMETHING THAT LOOKS AT EVERY CARD IN PLAYERHAND + REVEALED CARD FINDS COMBINATIONS TO MAKE UNIQUE 15) {
-//       playerPoints += 2 FOR EACH UNIQUE COMBINATION
-//     }
-//     if (SOMETHING THAT LOOKS AT EVERY CARD IN PLAYERHAND + REVEALED CARD FINDS COMBINATIONS TO MAKE UNIQUE RUNS) {
-//       playerPoints += RUN LENGTH
-//     }
-//     if (SOMETHING THAT LOOKS AT EVERY CARD IN PLAYERHAND + REVEALED CARD FINDS COMBINATIONS TO MAKE UNIQUE PAIRS) {
-//       playerPoints += 2 FOR EACH UNIQUE COMBINATION
-//     }
-//     if (SOMETHING THAT LOOKS AT EVERY JACK IN PLAYERHAND FINDS IF SUIT MATCHES REVEALED CARD) {
-//       playerPoints += 1
-//     }
-//   }
-// }
