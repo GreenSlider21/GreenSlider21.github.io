@@ -16,8 +16,13 @@ let cardSuit = ["clubs", "diamonds", "hearts", "spades"];
 let cardWorth = [2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 10, 10, 10];
 let cardImage = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 let playerHand = [];
-let cardSize = 0.40;
+let oppHand = [];
+let cutCard = [];
+let cardSize;
+let cardShiftX;
+let cardShiftY;
 let playerPoints = 0;
+let displayCards = [playerHand, cutCard, oppHand];
 
 function preload(){
   // preloading each seperate suit as differnt arrays so that they can be accessed easily later
@@ -31,15 +36,31 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  cardScale();
   createDeck();
   drawHand();
+  oppDrawHand();
+  cutDeck();
 }
 
 function draw() {
   background(53, 101, 77);
-  showHand();
+  showCards();
 }
 
+function cardScale() {
+  // scales down the card sizes and positions so that the game is still tecnically playable on any size windown
+  if (width < height) {
+    cardSize = width/5000;
+    cardShiftX = width*cardSize;
+    cardShiftY = width*cardSize;
+  }
+  else {
+    cardSize = height/5000;
+    cardShiftX = height*cardSize;
+    cardShiftY = width*cardSize;
+  }
+}
 
 function createDeck() {
   // unsing arrays created earlier to create one card of each suit and number with appropriate values for calculations and images then putting all of this in a deck array
@@ -57,36 +78,54 @@ function createDeck() {
 }
 
 function drawHand() {
-  // takes six random cards out of the deck and put them in the playerHand array
+  // takes six random cards out of the deck and puts them in the playerHand array
   for (let knave = 0; knave < 6; knave++) {
-    let theRandom = Math.round(random(51 - knave));
+    let theRandom = Math.round(random(0, 51 - knave));
     playerHand.push(structuredClone(deck[theRandom]));
     deck.splice(theRandom, 1);
   }
 }
 
-function showHand() {
-  // displays the cards in the players hand currently
-  for (let treys = 0; treys < playerHand.length; treys++) {
-    // displays clubs
-    if (playerHand[treys].suitValue === "clubs") {
-      image(clubsImages[playerHand[treys].imageValue], treys*210, height - 300, 
-        clubsImages[playerHand[treys].imageValue].width * cardSize, clubsImages[playerHand[treys].imageValue].height * cardSize);
-    }
-    // displays diamonds
-    if (playerHand[treys].suitValue === "diamonds") {
-      image(diamondsImages[playerHand[treys].imageValue], treys*210, height - 300, 
-        diamondsImages[playerHand[treys].imageValue].width * cardSize, diamondsImages[playerHand[treys].imageValue].height * cardSize);
-    }
-    // displays heartss
-    if (playerHand[treys].suitValue === "hearts") {
-      image(heartsImages[playerHand[treys].imageValue], treys*210, height - 300, 
-        heartsImages[playerHand[treys].imageValue].width * cardSize, heartsImages[playerHand[treys].imageValue].height * cardSize);
-    }
-    // displays spades
-    if (playerHand[treys].suitValue === "spades") {
-      image(spadesImages[playerHand[treys].imageValue], treys*210, height - 300, 
-        spadesImages[playerHand[treys].imageValue].width * cardSize, spadesImages[playerHand[treys].imageValue].height * cardSize);
+function oppDrawHand() {
+  // takes six random cards out of the deck and puts them in the oppHand array
+  for (let fool = 0; fool < 6; fool++) {
+    let aRandom = Math.round(random(0, 45 - fool));
+    oppHand.push(structuredClone(deck[aRandom]));
+    deck.splice(aRandom, 1);
+  }
+}
+
+function cutDeck() {
+  // takes one random card out of the deck and puts it in the cutCard array
+    let anoutherRandom = Math.round(random(0, 39));
+    cutCard.push(structuredClone(deck[anoutherRandom]));
+    deck.splice(anoutherRandom, 1);
+}
+
+function showCards() {
+  for (let pip = 0; pip < displayCards.length; pip++){
+    // displays the cards the player can see
+    for (let treys = 0; treys < displayCards[pip].length; treys++) {
+      // displays clubs
+      if (displayCards[pip][treys].suitValue === "clubs") {
+        image(clubsImages[displayCards[pip][treys].imageValue], treys*cardShiftX, -pip*cardShiftY + windowHeight/1.2, 
+          clubsImages[displayCards[pip][treys].imageValue].width * cardSize, clubsImages[displayCards[pip][treys].imageValue].height * cardSize);
+      }
+      // displays diamonds
+      if (displayCards[pip][treys].suitValue === "diamonds") {
+        image(diamondsImages[displayCards[pip][treys].imageValue], treys*cardShiftX, -pip*cardShiftY + windowHeight/1.2, 
+          diamondsImages[displayCards[pip][treys].imageValue].width * cardSize, diamondsImages[displayCards[pip][treys].imageValue].height * cardSize);
+      }
+      // displays heartss
+      if (displayCards[pip][treys].suitValue === "hearts") {
+        image(heartsImages[displayCards[pip][treys].imageValue], treys*cardShiftX, -pip*cardShiftY + windowHeight/1.2, 
+          heartsImages[displayCards[pip][treys].imageValue].width * cardSize, heartsImages[displayCards[pip][treys].imageValue].height * cardSize);
+      }
+      // displays spades
+      if (displayCards[pip][treys].suitValue === "spades") {
+        image(spadesImages[displayCards[pip][treys].imageValue], treys*cardShiftX, -pip*cardShiftY + windowHeight/1.2, 
+          spadesImages[displayCards[pip][treys].imageValue].width * cardSize, spadesImages[displayCards[pip][treys].imageValue].height * cardSize);
+      }
     }
   }
 }
