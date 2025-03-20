@@ -42,13 +42,14 @@ function preload(){
 }
 
 function setup() {
-  createCanvas(800, 800);
+  createCanvas(700, 700);
   cardScale();
   createDeck();
 }
 
 function draw() {
   background(53, 101, 77);
+  scoreBoard();
   showCards();
   spaceKeyPressed();
   cuttingTime();
@@ -57,12 +58,11 @@ function draw() {
   cutDeck();
   discardCards();
   scoreCards();
-  scoreBoard();
 }
 
 function spaceKeyPressed() {
   // lets space key draw card
-  if (key === " "){
+  if (key === " ") {
     playerDraws = true;
     oppDraws = true;
   }
@@ -78,7 +78,7 @@ function cardScale() {
   // scales down the card sizes and adds card spacing
   cardSize = 0.16;
   cardShiftX = 100;
-  cardShiftY = 325;
+  cardShiftY = 225;
 }
 
 function createDeck() {
@@ -137,7 +137,7 @@ function cutDeck() {
       deck.splice(anoutherRandom, 1);
     }
     else {
-      cutCard = false
+      cutCard = false;
     }
   }
 }
@@ -178,6 +178,9 @@ function discardCards() {
              mouseX > treys*cardShiftX && mouseX < treys*cardShiftX + 80 && 
              mouseIsPressed) {
         background(0);
+        console.log(pip, treys);
+        deck.push(structuredClone(oppHand[treys]));
+        oppHand.splice(treys, 1);
       }
     }
   }
