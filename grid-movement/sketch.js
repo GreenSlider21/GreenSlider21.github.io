@@ -1,6 +1,4 @@
-// 2D Array Rectangle Grid Demo
-// Pick a cell size, then fill the screen with as many as possible.
-// This will likely be rectangular instead of square...
+// Grid Movement Demo
 
 const CELL_SIZE = 100;
 const OPEN_TILE = 0;
