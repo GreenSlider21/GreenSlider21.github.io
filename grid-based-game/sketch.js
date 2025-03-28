@@ -18,7 +18,7 @@ let thePlayer = {
   x: 0,
   y: 0,
 };
-let moveCharacter = false;
+let selectCharacter = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -33,7 +33,8 @@ function setup() {
 function draw() {
   background(220);
   displayGrid();
-  console.log(moveCharacter);
+  console.log(selectCharacter);
+  moveCharacter();
 }
 
 function keyPressed() {
@@ -76,11 +77,18 @@ function movePlayer(x, y) {
 function mousePressed() {
   if (Math.floor(mouseY/CELL_SIZE) === thePlayer.y && Math.floor(mouseX/CELL_SIZE) === thePlayer.x) {
     console.log("ya hit");
-    moveCharacter = true;
+    selectCharacter = true;
   }
   else {
     console.log("ya missed");
-    moveCharacter = false;
+    selectCharacter = false;
+  }
+}
+
+function moveCharacter() {
+  if (selectCharacter === true) {
+    movePlayer(thePlayer.x + 1);
+    movePlayer(thePlayer.y + 1);
   }
 }
 
