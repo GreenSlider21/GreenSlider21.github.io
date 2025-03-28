@@ -1,4 +1,11 @@
-// Grid Movement Demo
+// Grid Based Game
+// Liam Prange
+// 3/28/2025
+//
+// Extra for Experts:
+// 
+// art source
+// https://opengameart.org/
 
 const CELL_SIZE = 100;
 const OPEN_TILE = 0;
@@ -11,6 +18,7 @@ let thePlayer = {
   x: 0,
   y: 0,
 };
+let moveCharacter = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -25,6 +33,7 @@ function setup() {
 function draw() {
   background(220);
   displayGrid();
+  console.log(moveCharacter);
 }
 
 function keyPressed() {
@@ -65,17 +74,14 @@ function movePlayer(x, y) {
 }
 
 function mousePressed() {
-  let x = Math.floor(mouseX/CELL_SIZE);
-  let y = Math.floor(mouseY/CELL_SIZE);
-
-  // self
-  toggleCell(x,y);
-
-  // neighbours
-  toggleCell(x + 1,y);
-  toggleCell(x,y + 1);
-  toggleCell(x - 1,y);
-  toggleCell(x,y - 1);
+  if (Math.floor(mouseY/CELL_SIZE) === thePlayer.y && Math.floor(mouseX/CELL_SIZE) === thePlayer.x) {
+    console.log("ya hit");
+    moveCharacter = true;
+  }
+  else {
+    console.log("ya missed");
+    moveCharacter = false;
+  }
 }
 
 function toggleCell(x, y) {
