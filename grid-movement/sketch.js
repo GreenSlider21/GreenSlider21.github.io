@@ -1,6 +1,6 @@
 // Grid Movement Demo
 
-const CELL_SIZE = 100;
+const CELL_SIZE = 50;
 const OPEN_TILE = 0;
 const IMPASSABLE = 1;
 const PLAYER = 9;
@@ -20,7 +20,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth * 0.9, windowHeight * 0.9);
   cols = Math.ceil(width/CELL_SIZE);
   rows = Math.ceil(height/CELL_SIZE);
   grid = generateRandomGrid(cols, rows);
