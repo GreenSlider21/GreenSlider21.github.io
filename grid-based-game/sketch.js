@@ -1,4 +1,4 @@
-// Grid Based Game
+// Dig Dug
 // Liam Prange
 // 3/28/2025
 //
@@ -7,23 +7,30 @@
 // art source
 // https://opengameart.org/
 
-const CELL_SIZE = 100;
+const CELL_SIZE = 45;
 const OPEN_TILE = 0;
 const IMPASSABLE = 1;
 const PLAYER = 9;
+const POOKA = 8;
+const FYGAR = 7;
+const ROCK = 2;
 let grid;
-let rows;
-let cols;
+let rows = 16;
+let cols = 14;
 let thePlayer = {
-  x: 0,
-  y: 0,
+  x: 6,
+  y: 8,
 };
-let selectCharacter = false;
+let digTime = 0;
+let digDelay = 400;
+let level;
+
+function preload() {
+  level = loadJSON("level.json");
+}
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  cols = Math.ceil(width/CELL_SIZE);
-  rows = Math.ceil(height/CELL_SIZE);
+  createCanvas(windowWidth * 0.9, windowHeight * 0.9);
   grid = generateRandomGrid(cols, rows);
 
   // add the player to the grid
@@ -33,8 +40,6 @@ function setup() {
 function draw() {
   background(220);
   displayGrid();
-  console.log(selectCharacter);
-  moveCharacter();
 }
 
 function keyPressed() {
@@ -54,6 +59,9 @@ function keyPressed() {
     // move right
     movePlayer(thePlayer.x + 1, thePlayer.y);
   }
+  if (key === "l") {
+    grid = level;
+  }
 }
 
 function movePlayer(x, y) {
@@ -72,24 +80,33 @@ function movePlayer(x, y) {
     // put the player on grid
     grid[thePlayer.y][thePlayer.x] = PLAYER;
   }
+
+  else if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === IMPASSABLE) {
+    if (millis() - digTime > digDelay) {
+      digTime = millis();
+
+      // previos player location
+      let oldX = thePlayer.x;
+      let oldY = thePlayer.y;
+    
+      //  keep track of player current location
+      thePlayer.x = x;
+      thePlayer.y = y;
+    
+      // reset the old spot to be open
+      grid[oldY][oldX] = OPEN_TILE;
+    
+      // put the player on grid
+      grid[thePlayer.y][thePlayer.x] = PLAYER;
+    }
+  }
 }
 
 function mousePressed() {
-  if (Math.floor(mouseY/CELL_SIZE) === thePlayer.y && Math.floor(mouseX/CELL_SIZE) === thePlayer.x) {
-    console.log("ya hit");
-    selectCharacter = true;
-  }
-  else {
-    console.log("ya missed");
-    selectCharacter = false;
-  }
-}
+  let x = Math.floor(mouseX/CELL_SIZE);
+  let y = Math.floor(mouseY/CELL_SIZE);
 
-function moveCharacter() {
-  if (selectCharacter === true) {
-    movePlayer(thePlayer.x + 1);
-    movePlayer(thePlayer.y + 1);
-  }
+  toggleCell(x,y);
 }
 
 function toggleCell(x, y) {
@@ -109,14 +126,16 @@ function displayGrid() {
     for (let x = 0; x < cols; x++) {
       if (grid[y][x] === OPEN_TILE) {
         fill("white");
+        square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
       }
       else if (grid[y][x] === IMPASSABLE) {
         fill("black");
+        square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
       }
       else if (grid[y][x] === PLAYER) {
         fill("red");
+        square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
       }
-      square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
     }
   }
 }
