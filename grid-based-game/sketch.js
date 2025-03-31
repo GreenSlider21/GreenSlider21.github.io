@@ -7,7 +7,7 @@
 // art source
 // https://opengameart.org/
 
-const CELL_SIZE = 45;
+const CELL_SIZE = 20;
 const OPEN_TILE = 0;
 const IMPASSABLE = 1;
 const PLAYER = 9;
@@ -15,11 +15,11 @@ const POOKA = 8;
 const FYGAR = 7;
 const ROCK = 2;
 let grid;
-let rows = 16;
-let cols = 14;
+let rows = 16*2;
+let cols = 14*2;
 let thePlayer = {
-  x: 6,
-  y: 8,
+  x: 6*2,
+  y: 8*2,
 };
 let digTime = 0;
 let digDelay = 400;
@@ -30,7 +30,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(windowWidth * 0.9, windowHeight * 0.9);
+  createCanvas(cols * CELL_SIZE, rows * CELL_SIZE);
   grid = generateRandomGrid(cols, rows);
 
   // add the player to the grid
@@ -39,28 +39,33 @@ function setup() {
 
 function draw() {
   background(220);
+  // noStroke();
   displayGrid();
+  playerControls();
 }
 
 function keyPressed() {
-  if (key === "w") {
+  if (key === "l") {
+    grid = level;
+  }
+}
+
+function playerControls() {
+  if (keyIsDown(87) === true) {
     // move up
     movePlayer(thePlayer.x, thePlayer.y - 1);
   }
-  if (key === "s") {
+  if (keyIsDown(83) === true) {
     // move down
     movePlayer(thePlayer.x, thePlayer.y + 1);
   }
-  if (key === "a") {
+  if (keyIsDown(65) === true) {
     // move left
     movePlayer(thePlayer.x - 1, thePlayer.y);
   }
-  if (key === "d") {
+  if (keyIsDown(68) === true) {
     // move right
     movePlayer(thePlayer.x + 1, thePlayer.y);
-  }
-  if (key === "l") {
-    grid = level;
   }
 }
 
@@ -107,6 +112,9 @@ function mousePressed() {
   let y = Math.floor(mouseY/CELL_SIZE);
 
   toggleCell(x,y);
+  toggleCell(x+1,y);
+  toggleCell(x,y+1);
+  toggleCell(x+1,y+1);
 }
 
 function toggleCell(x, y) {
@@ -146,12 +154,12 @@ function generateRandomGrid(cols, rows) {
     newGrid.push([]);
     for (let x = 0; x < cols; x++) {
       //toss a 0 or 1 in randomly
-      if (random(100) < 50) {
-        newGrid[y].push(OPEN_TILE);
-      }
-      else {
-        newGrid[y].push(IMPASSABLE);
-      }
+      // if (random(100) < 50) {
+      //   newGrid[y].push(OPEN_TILE);
+      // }
+      // else {
+      newGrid[y].push(IMPASSABLE);
+      // }
     }
   }
   return newGrid;
