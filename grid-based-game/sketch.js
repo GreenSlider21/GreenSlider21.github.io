@@ -21,6 +21,8 @@ let thePlayer = {
   x: 6*2,
   y: 8*2,
 };
+let walkTime = 0;
+let walkDelay = 200;
 let digTime = 0;
 let digDelay = 400;
 let level;
@@ -70,20 +72,31 @@ function playerControls() {
 }
 
 function movePlayer(x, y) {
-  if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === OPEN_TILE) {
-    // previos player location
-    let oldX = thePlayer.x;
-    let oldY = thePlayer.y;
-  
-    //  keep track of player current location
-    thePlayer.x = x;
-    thePlayer.y = y;
-  
-    // reset the old spot to be open
-    grid[oldY][oldX] = OPEN_TILE;
-  
-    // put the player on grid
-    grid[thePlayer.y][thePlayer.x] = PLAYER;
+  if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === OPEN_TILE || 
+    x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === PLAYER) {
+    if (millis() - walkTime > walkDelay) {
+      walkTime = millis();
+
+      // previos player location
+      let oldX = thePlayer.x;
+      let oldY = thePlayer.y;
+    
+      //  keep track of player current location
+      thePlayer.x = x;
+      thePlayer.y = y;
+    
+      // reset the old spot to be open
+      grid[oldY][oldX] = OPEN_TILE;
+      grid[oldY+1][oldX] = OPEN_TILE;
+      grid[oldY][oldX+1] = OPEN_TILE;
+      grid[oldY+1][oldX+1] = OPEN_TILE;
+    
+      // put the player on grid
+      grid[thePlayer.y][thePlayer.x] = PLAYER;
+      grid[thePlayer.y+1][thePlayer.x] = PLAYER;
+      grid[thePlayer.y][thePlayer.x+1] = PLAYER;
+      grid[thePlayer.y+1][thePlayer.x+1] = PLAYER;
+    }
   }
 
   else if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === IMPASSABLE) {
@@ -100,9 +113,15 @@ function movePlayer(x, y) {
     
       // reset the old spot to be open
       grid[oldY][oldX] = OPEN_TILE;
+      grid[oldY+1][oldX] = OPEN_TILE;
+      grid[oldY][oldX+1] = OPEN_TILE;
+      grid[oldY+1][oldX+1] = OPEN_TILE;
     
       // put the player on grid
       grid[thePlayer.y][thePlayer.x] = PLAYER;
+      grid[thePlayer.y+1][thePlayer.x] = PLAYER;
+      grid[thePlayer.y][thePlayer.x+1] = PLAYER;
+      grid[thePlayer.y+1][thePlayer.x+1] = PLAYER;
     }
   }
 }
@@ -143,6 +162,9 @@ function displayGrid() {
       else if (grid[y][x] === PLAYER) {
         fill("red");
         square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
+        square(x * CELL_SIZE + 1, y * CELL_SIZE, CELL_SIZE);
+        square(x * CELL_SIZE, y * CELL_SIZE + 1, CELL_SIZE);
+        square(x * CELL_SIZE + 1, y * CELL_SIZE + 1, CELL_SIZE);
       }
     }
   }
