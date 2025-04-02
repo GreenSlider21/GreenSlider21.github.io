@@ -9,17 +9,17 @@
 
 const CELL_SIZE = 20;
 const OPEN_TILE = 0;
-const IMPASSABLE = 1;
+const DIGABLE = 1;
 const PLAYER = 9;
 const POOKA = 8;
 const FYGAR = 7;
 const ROCK = 2;
 let grid;
-let rows = 16*2;
-let cols = 14*2;
+let rows = 32;
+let cols = 28;
 let thePlayer = {
-  x: 6*2,
-  y: 8*2,
+  x: 12,
+  y: 16,
 };
 let walkTime = 0;
 let walkDelay = 200;
@@ -72,6 +72,7 @@ function playerControls() {
 }
 
 function movePlayer(x, y) {
+  console.log(thePlayer.x, thePlayer.y, x, y);
   if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === OPEN_TILE || 
     x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === PLAYER) {
     if (millis() - walkTime > walkDelay) {
@@ -99,7 +100,7 @@ function movePlayer(x, y) {
     }
   }
 
-  else if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === IMPASSABLE) {
+  else if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === DIGABLE) {
     if (millis() - digTime > digDelay) {
       digTime = millis();
 
@@ -140,9 +141,9 @@ function toggleCell(x, y) {
   // make sure cell your toggling is actually in the grid
   if (x >= 0 && x < cols && y >= 0 && y < rows){
     if (grid[y][x] === OPEN_TILE) {
-      grid[y][x] = IMPASSABLE;
+      grid[y][x] = DIGABLE;
     }
-    else if (grid[y][x] === IMPASSABLE) {
+    else if (grid[y][x] === DIGABLE) {
       grid[y][x] = OPEN_TILE;
     }
   }
@@ -155,7 +156,7 @@ function displayGrid() {
         fill("white");
         square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
       }
-      else if (grid[y][x] === IMPASSABLE) {
+      else if (grid[y][x] === DIGABLE) {
         fill("black");
         square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
       }
@@ -180,7 +181,7 @@ function generateRandomGrid(cols, rows) {
       //   newGrid[y].push(OPEN_TILE);
       // }
       // else {
-      newGrid[y].push(IMPASSABLE);
+      newGrid[y].push(DIGABLE);
       // }
     }
   }
