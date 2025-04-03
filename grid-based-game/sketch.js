@@ -1,12 +1,14 @@
 // Dig Dug
 // Liam Prange
 // 3/28/2025
-//
+// https://www.youtube.com/watch?v=9rrogEHWTBE
+// https://www.youtube.com/watch?v=tZ7dhmhT9Ug
 // Extra for Experts:
 // 
 // art source
 // https://opengameart.org/
 
+// constants
 const CELL_SIZE = 20;
 const OPEN_TILE = 0;
 const DIGABLE = 1;
@@ -14,17 +16,19 @@ const PLAYER = 9;
 const POOKA = 8;
 const FYGAR = 7;
 const ROCK = 2;
+const ROWS = 32;
+const COLS = 28;
+const WALKDELAY = 200;
+const DIGDELAY = 400;
+
+// variables
 let grid;
-let rows = 32;
-let cols = 28;
 let thePlayer = {
   x: 12,
   y: 16,
 };
 let walkTime = 0;
-let walkDelay = 200;
 let digTime = 0;
-let digDelay = 400;
 let level;
 
 function preload() {
@@ -32,8 +36,8 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(cols * CELL_SIZE, rows * CELL_SIZE);
-  grid = generateRandomGrid(cols, rows);
+  createCanvas(COLS * CELL_SIZE, ROWS * CELL_SIZE);
+  grid = level;
 
   // add the player to the grid
   grid[thePlayer.y][thePlayer.x] = PLAYER;
@@ -44,12 +48,6 @@ function draw() {
   // noStroke();
   displayGrid();
   playerControls();
-}
-
-function keyPressed() {
-  if (key === "l") {
-    grid = level;
-  }
 }
 
 function playerControls() {
@@ -72,19 +70,19 @@ function playerControls() {
 }
 
 function movePlayer(x, y) {
-  if (x >= 0 && x < cols - 1 && y >= 0 && y < rows - 1 && grid[y][x] === OPEN_TILE || 
-    x >= 0 && x < cols - 1 && y >= 0 && y < rows - 1 && grid[y][x] === PLAYER) {
-    if (millis() - walkTime > walkDelay) {
-      walkTime = millis();
+  if (x >= 0 && x < COLS - 1 && y >= 0 && y < ROWS - 1 && 
+    (grid[y][x] === DIGABLE || grid[y+1][x] === DIGABLE ||grid[y][x+1] === DIGABLE ||grid[y+1][x+1] === DIGABLE)) {
+    if (millis() - digTime > DIGDELAY) {
+      digTime = millis();
 
       // previos player location
       let oldX = thePlayer.x;
       let oldY = thePlayer.y;
-
+    
       //  keep track of player current location
       thePlayer.x = x;
       thePlayer.y = y;
-      console.log(thePlayer.x, thePlayer.y, x, y, oldX, oldY);
+    
       // reset the old spot to be open
       grid[oldY][oldX] = OPEN_TILE;
       grid[oldY+1][oldX] = OPEN_TILE;
@@ -99,18 +97,19 @@ function movePlayer(x, y) {
     }
   }
 
-  else if (x >= 0 && x < cols - 1 && y >= 0 && y < rows - 1 && grid[y][x] === DIGABLE) {
-    if (millis() - digTime > digDelay) {
-      digTime = millis();
+  else if (x >= 0 && x < COLS - 1 && y >= 0 && y < ROWS - 1 && grid[y][x] === OPEN_TILE || 
+    x >= 0 && x < COLS - 1 && y >= 0 && y < ROWS - 1 && grid[y][x] === PLAYER) {
+    if (millis() - walkTime > WALKDELAY) {
+      walkTime = millis();
 
       // previos player location
       let oldX = thePlayer.x;
       let oldY = thePlayer.y;
-    
+
       //  keep track of player current location
       thePlayer.x = x;
       thePlayer.y = y;
-    
+      console.log(thePlayer.x, thePlayer.y, x, y, oldX, oldY);
       // reset the old spot to be open
       grid[oldY][oldX] = OPEN_TILE;
       grid[oldY+1][oldX] = OPEN_TILE;
@@ -138,7 +137,7 @@ function mousePressed() {
 
 function toggleCell(x, y) {
   // make sure cell your toggling is actually in the grid
-  if (x >= 0 && x < cols && y >= 0 && y < rows){
+  if (x >= 0 && x < COLS && y >= 0 && y < ROWS){
     if (grid[y][x] === OPEN_TILE) {
       grid[y][x] = DIGABLE;
     }
@@ -149,8 +148,8 @@ function toggleCell(x, y) {
 }
 
 function displayGrid() {
-  for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < cols; x++) {
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
       if (grid[y][x] === OPEN_TILE) {
         fill("white");
         square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
@@ -166,23 +165,20 @@ function displayGrid() {
         square(x * CELL_SIZE, y * CELL_SIZE + 1, CELL_SIZE);
         square(x * CELL_SIZE + 1, y * CELL_SIZE + 1, CELL_SIZE);
       }
+      else if (grid[y][x] === POOKA) {
+        fill("orange");
+        square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
+        square(x * CELL_SIZE + 1, y * CELL_SIZE, CELL_SIZE);
+        square(x * CELL_SIZE, y * CELL_SIZE + 1, CELL_SIZE);
+        square(x * CELL_SIZE + 1, y * CELL_SIZE + 1, CELL_SIZE);
+      }
+      else if (grid[y][x] === FYGAR) {
+        fill("green");
+        square(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE);
+        square(x * CELL_SIZE + 1, y * CELL_SIZE, CELL_SIZE);
+        square(x * CELL_SIZE, y * CELL_SIZE + 1, CELL_SIZE);
+        square(x * CELL_SIZE + 1, y * CELL_SIZE + 1, CELL_SIZE);
+      }
     }
   }
-}
-
-function generateRandomGrid(cols, rows) {
-  let newGrid = [];
-  for (let y = 0; y < rows; y++) {
-    newGrid.push([]);
-    for (let x = 0; x < cols; x++) {
-      //toss a 0 or 1 in randomly
-      // if (random(100) < 50) {
-      //   newGrid[y].push(OPEN_TILE);
-      // }
-      // else {
-      newGrid[y].push(DIGABLE);
-      // }
-    }
-  }
-  return newGrid;
 }
