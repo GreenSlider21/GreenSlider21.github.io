@@ -72,20 +72,19 @@ function playerControls() {
 }
 
 function movePlayer(x, y) {
-  console.log(thePlayer.x, thePlayer.y, x, y);
-  if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === OPEN_TILE || 
-    x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === PLAYER) {
+  if (x >= 0 && x < cols - 1 && y >= 0 && y < rows - 1 && grid[y][x] === OPEN_TILE || 
+    x >= 0 && x < cols - 1 && y >= 0 && y < rows - 1 && grid[y][x] === PLAYER) {
     if (millis() - walkTime > walkDelay) {
       walkTime = millis();
 
       // previos player location
       let oldX = thePlayer.x;
       let oldY = thePlayer.y;
-    
+
       //  keep track of player current location
       thePlayer.x = x;
       thePlayer.y = y;
-    
+      console.log(thePlayer.x, thePlayer.y, x, y, oldX, oldY);
       // reset the old spot to be open
       grid[oldY][oldX] = OPEN_TILE;
       grid[oldY+1][oldX] = OPEN_TILE;
@@ -100,7 +99,7 @@ function movePlayer(x, y) {
     }
   }
 
-  else if (x >= 0 && x < cols && y >= 0 && y < rows && grid[y][x] === DIGABLE) {
+  else if (x >= 0 && x < cols - 1 && y >= 0 && y < rows - 1 && grid[y][x] === DIGABLE) {
     if (millis() - digTime > digDelay) {
       digTime = millis();
 
