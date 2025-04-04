@@ -1,8 +1,8 @@
 // Dig Dug
 // Liam Prange
 // 3/28/2025
-// https://www.youtube.com/watch?v=9rrogEHWTBE
-// https://www.youtube.com/watch?v=tZ7dhmhT9Ug
+// https://www.youtube.com/watch?v=aKYlikFAV4k
+// https://github.com/CodingTrain/AStar/blob/master/astarpathfinder.js
 // Extra for Experts:
 // 
 // art source
