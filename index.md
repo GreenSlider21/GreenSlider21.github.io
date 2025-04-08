@@ -16,4 +16,4 @@
 # CS30 Projects
 - [Interactive Scene](interactive-scene)
 - [Arrays and Object Notation](arrays-and-object-notation) 
-- [Grid Based Game](grid-based-game)
+- [Grid Based Game/Final Project](grid-based-game)

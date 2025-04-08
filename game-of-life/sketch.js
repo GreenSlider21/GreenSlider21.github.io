@@ -134,6 +134,7 @@ function generateRandomGrid(cols, rows) {
       }
     }
   }
+  console.log(newGrid);
   return newGrid;
 }
 
