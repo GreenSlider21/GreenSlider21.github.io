@@ -12,6 +12,7 @@
 - [Game of Life](game-of-life)
 - [Character Moving in Grid](grid-movement)
 - [Platformer](platformer)
+- [Walker OOP](walker)
 
 # CS30 Projects
 - [Interactive Scene](interactive-scene)
