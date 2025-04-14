@@ -13,6 +13,7 @@
 - [Character Moving in Grid](grid-movement)
 - [Platformer](platformer)
 - [Walker OOP](walker)
+- [Fireworks OOP](fireworks)
 
 # CS30 Projects
 - [Interactive Scene](interactive-scene)
