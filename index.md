@@ -14,6 +14,7 @@
 - [Platformer](platformer)
 - [Walker OOP](walker)
 - [Fireworks OOP](fireworks)
+- [Connected Nodes OOP](nodes)
 
 # CS30 Projects
 - [Interactive Scene](interactive-scene)
