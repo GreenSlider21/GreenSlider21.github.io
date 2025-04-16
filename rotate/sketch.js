@@ -7,7 +7,13 @@ function setup() {
 }
 
 function draw() {
-  background(220);
+  background("blue");
+
+  fill("green");
+  rect(200, height - 100, width*2, 200);
+
+  fill("yellow");
+  rect(100, 100, 100, 100);
 
   push(); // Save the transformation matrix
   translate(width/2, height/2);
@@ -16,6 +22,10 @@ function draw() {
   rect(0, 0, 200, 75);
   pop(); // reset to the last pushed changes of the matrix
 
-  fill("green");
-  rect(200, height - 100, width*2, 200);
+  push();
+  translate(width/2, height/2);
+  rotate(mouseY);
+  fill("purple");
+  rect(0, 0, 200, 75);
+  pop();
 }
