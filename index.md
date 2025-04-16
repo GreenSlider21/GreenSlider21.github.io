@@ -15,6 +15,7 @@
 - [Walker OOP](walker)
 - [Fireworks OOP](fireworks)
 - [Connected Nodes OOP](nodes)
+- [Translate/Rotate](rotate)
 
 # CS30 Projects
 - [Interactive Scene](interactive-scene)
