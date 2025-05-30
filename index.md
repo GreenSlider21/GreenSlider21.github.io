@@ -19,6 +19,7 @@
 - [Local Storage](local-storage)
 - [2d Collide Demo](2d-collide)
 - [OOP Inheritance](inheritance)
+- [Sierpinski Triangle](triangle)
 
 # CS30 Projects
 - [Interactive Scene](interactive-scene)
